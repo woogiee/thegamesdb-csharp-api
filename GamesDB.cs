@@ -7,7 +7,13 @@ using System.Xml;
 using System.Collections;
 
 namespace TheGamesDBAPI {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class GamesDB {
+        /// <summary>
+        /// The base image path that should be prepended to all the relative image paths to get the full paths to the images.
+        /// </summary>
         public const String BaseImgURL = @"http://thegamesdb.net/banners/";
 
         /// <summary>
@@ -215,6 +221,9 @@ namespace TheGamesDBAPI {
                 switch (attributeNode.Name) {
                     case "id":
                         int.TryParse(attributeNode.InnerText, out platform.ID);
+                        break;
+                    case "Platform":
+                        platform.Name = attributeNode.InnerText;
                         break;
                     case "overview":
                         platform.Overview = attributeNode.InnerText;

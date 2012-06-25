@@ -6,32 +6,126 @@ using System.Xml;
 using System.Collections;
 
 namespace TheGamesDBAPI {
+    /// <summary>
+    /// Contains the data for one game in the database.
+    /// </summary>
     public class Game {
+        /// <summary>
+        /// Unique database ID
+        /// </summary>
         public int ID;
-        public String Title, Platform, ReleaseDate, Overview, ESRB, Players, Publisher, Developer;
+
+        /// <summary>
+        /// Title of the game.
+        /// </summary>
+        public String Title;
+
+        /// <summary>
+        /// Which platform the game is for.
+        /// </summary>
+        public String Platform;
+        
+        /// <summary>
+        /// Which date the game was first released on.
+        /// </summary>
+        public String ReleaseDate;
+        
+        /// <summary>
+        /// A general description of the game.
+        /// </summary>
+        public String Overview;
+        
+        /// <summary>
+        /// ESRB rating for the game.
+        /// </summary>
+        public String ESRB;
+        
+        /// <summary>
+        /// How many players the game supports. "1","2","3" or "4+".
+        /// </summary>
+        public String Players;
+        
+        /// <summary>
+        /// The publisher(s) of the game.
+        /// </summary>
+        public String Publisher;
+        
+        /// <summary>
+        /// The developer(s) of the game.
+        /// </summary>
+        public String Developer;
+
+        /// <summary>
+        /// The overall rating of the game as rated by users on TheGamesDB.net.
+        /// </summary>
         public String Rating;
 
-        public List<String> AlternateTitles, Genres;
+        /// <summary>
+        /// A list of all the alternative titles of the game.
+        /// </summary>
+        public List<String> AlternateTitles;
+
+        /// <summary>
+        /// A list of all the game's genres.
+        /// </summary>
+        public List<String> Genres;
+
+        /// <summary>
+        /// A GameImages-object containing all the images for the game.
+        /// </summary>
         public GameImages Images;
 
+        /// <summary>
+        /// Creates a new Game without any content.
+        /// </summary>
         public Game() {
             AlternateTitles = new List<String>();
             Genres = new List<String>();
             Images = new GameImages();
         }
 
+        /// <summary>
+        /// Represents the images for one game in the database.
+        /// </summary>
         public class GameImages {
-            public GameImage BoxartBack, BoxartFront;
+            /// <summary>
+            /// The art on the back of the box.
+            /// </summary>
+            public GameImage BoxartBack;
+
+            /// <summary>
+            /// The art on the front of the box.
+            /// </summary>
+            public GameImage BoxartFront;
+
+            /// <summary>
+            /// A list of all the fanart for the game that have been uploaded to the database.
+            /// </summary>
             public List<GameImage> Fanart;
+
+            /// <summary>
+            /// A list of all the banners for the game that have been uploaded to the database.
+            /// </summary>
             public List<GameImage> Banners;
+
+            /// <summary>
+            /// A list of all the screenshots for the game that have been uploaded to the database.
+            /// </summary>
             public List<GameImage> Screenshots;
 
+            /// <summary>
+            /// Creates a new GameImages without any content.
+            /// </summary>
             public GameImages() {
                 Fanart = new List<GameImage>();
                 Banners = new List<GameImage>();
                 Screenshots = new List<GameImage>();
             }
 
+            /// <summary>
+            /// Adds all the images that can be found in the XmlNode
+            /// </summary>
+            /// <param name="node">the XmlNode to search through</param>
             public void FromXmlNode(XmlNode node) {
                 IEnumerator ienumImages = node.GetEnumerator();
                 while (ienumImages.MoveNext()) {
@@ -60,10 +154,30 @@ namespace TheGamesDBAPI {
                 }
             }
 
+            /// <summary>
+            /// Represents one image
+            /// </summary>
             public class GameImage {
-                public int Width, Height;
+                /// <summary>
+                /// The width of the image in pixels.
+                /// </summary>
+                public int Width;
+
+                /// <summary>
+                /// The height of the image in pixels.
+                /// </summary>
+                public int Height;
+
+                /// <summary>
+                /// The relative path to the image.
+                /// </summary>
+                /// <seealso cref="GamesDB.BaseImgURL"/>
                 public String Path;
 
+                /// <summary>
+                /// Creates an image from an XmlNode.
+                /// </summary>
+                /// <param name="node">XmlNode to get data from</param>
                 public GameImage(XmlNode node) {
                     Path = node.InnerText;
 
