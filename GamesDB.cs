@@ -7,9 +7,6 @@ using System.Xml;
 using System.Collections;
 
 namespace TheGamesDBAPI {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class GamesDB {
         /// <summary>
         /// The base image path that should be prepended to all the relative image paths to get the full paths to the images.

@@ -153,6 +153,9 @@ namespace TheGamesDBAPI {
                 }
             }
 
+            /// <summary>
+            /// Represents one image
+            /// </summary>
             public class PlatformImage {
                 /// <summary>
                 /// The width of the image in pixels.
