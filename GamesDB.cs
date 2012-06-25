@@ -258,6 +258,9 @@ namespace TheGamesDBAPI {
                     case "Rating":
                         float.TryParse(attributeNode.InnerText, out platform.Rating);
                         break;
+                    case "Images":
+                        platform.Images.FromXmlNode(attributeNode);
+                        break;
                 }
             }
 

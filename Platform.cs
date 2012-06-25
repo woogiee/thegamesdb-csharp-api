@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Collections;
 
 namespace TheGamesDBAPI {
     /// <summary>
@@ -73,10 +75,112 @@ namespace TheGamesDBAPI {
         /// </summary>
         public float Rating;
 
+        /// <summary>
+        /// A PlatformImages-object containing all the images for the platform.
+        /// </summary>
         public PlatformImages Images;
 
-        public class PlatformImages {
+        /// <summary>
+        /// Creates a new Platform without any content.
+        /// </summary>
+        public Platform() {
+            Images = new PlatformImages();
+        }
 
+        /// <summary>
+        /// Represents the images for one platform in the database.
+        /// </summary>
+        public class PlatformImages {
+            /// <summary>
+            /// Path to the image of the console.
+            /// </summary>
+            public String ConsoleArt;
+
+            /// <summary>
+            /// Path to the image of the controller.
+            /// </summary>
+            public String ControllerArt;
+
+            /// <summary>
+            /// Boxart for the platform
+            /// </summary>
+            public PlatformImage Boxart;
+
+            /// <summary>
+            /// A list of all the fanart for the platform that have been uploaded to the database.
+            /// </summary>
+            public List<PlatformImage> Fanart;
+
+            /// <summary>
+            /// A list of all the banners for the platform that have been uploaded to the database.
+            /// </summary>
+            public List<PlatformImage> Banners;
+
+            /// <summary>
+            /// Creates a new PlatformImages without any content.
+            /// </summary>
+            public PlatformImages() {
+                Fanart = new List<PlatformImage>();
+                Banners = new List<PlatformImage>();
+            }
+
+            /// <summary>
+            /// Adds all the images that can be found in the XmlNode
+            /// </summary>
+            /// <param name="node">the XmlNode to search through</param>
+            public void FromXmlNode(XmlNode node) {
+                IEnumerator ienumImages = node.GetEnumerator();
+                while (ienumImages.MoveNext()) {
+                    XmlNode imageNode = (XmlNode)ienumImages.Current;
+
+                    switch (imageNode.Name) {
+                        case "fanart":
+                            Fanart.Add(new PlatformImage(imageNode.FirstChild));
+                            break;
+                        case "banner":
+                            Banners.Add(new PlatformImage(imageNode));
+                            break;
+                        case "boxart":
+                            Boxart = new PlatformImage(imageNode);
+                            break;
+                        case "consoleart":
+                            ConsoleArt = imageNode.InnerText;
+                            break;
+                        case "controllerart":
+                            ControllerArt = imageNode.InnerText;
+                            break;
+                    }
+                }
+            }
+
+            public class PlatformImage {
+                /// <summary>
+                /// The width of the image in pixels.
+                /// </summary>
+                public int Width;
+
+                /// <summary>
+                /// The height of the image in pixels.
+                /// </summary>
+                public int Height;
+
+                /// <summary>
+                /// The relative path to the image.
+                /// </summary>
+                /// <seealso cref="GamesDB.BaseImgURL"/>
+                public String Path;
+
+                /// <summary>
+                /// Creates an image from an XmlNode.
+                /// </summary>
+                /// <param name="node">XmlNode to get data from</param>
+                public PlatformImage(XmlNode node) {
+                    Path = node.InnerText;
+
+                    int.TryParse(node.Attributes.GetNamedItem("width").InnerText, out Width);
+                    int.TryParse(node.Attributes.GetNamedItem("height").InnerText, out Height);
+                }
+            }
         }
     }
 }
