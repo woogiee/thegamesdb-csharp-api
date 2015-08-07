@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Net;
@@ -62,6 +63,55 @@ namespace TheGamesDBAPI {
 
             return games;
         }
+
+		/// <summary>
+		/// Grabs all games by specific platform.
+		/// </summary>
+		/// <param name="platform">The platform id.</param>
+		/// <returns></returns>
+		public static ICollection<GamesByPlatformResult> GetPlatformGames(int platform)
+		{
+			XmlDocument doc = new XmlDocument();
+			doc.Load(@"http://thegamesdb.net/api/GetPlatformGames.php?platform=" + platform);
+
+			XmlNode root = doc.DocumentElement;
+			IEnumerator ienum = root.GetEnumerator();
+
+			List<GamesByPlatformResult> games = new List<GamesByPlatformResult>();
+
+			// Iterate through all games
+			XmlNode gameNode;
+			while (ienum.MoveNext())
+			{
+				GamesByPlatformResult game = new GamesByPlatformResult();
+				gameNode = (XmlNode)ienum.Current;
+
+				IEnumerator ienumGame = gameNode.GetEnumerator();
+				XmlNode attributeNode;
+				while (ienumGame.MoveNext())
+				{
+					attributeNode = (XmlNode)ienumGame.Current;
+
+					// Iterate through all game attributes
+					switch (attributeNode.Name)
+					{
+						case "id":
+							int.TryParse(attributeNode.InnerText, out game.ID);
+							break;
+						case "GameTitle":
+							game.GameTitle = attributeNode.InnerText;
+							break;
+						case "ReleaseDate":
+							game.ReleaseDate = attributeNode.InnerText;
+							break;
+					}
+				}
+
+				games.Add(game);
+			}
+
+			return games;
+		}
 
         /// <summary>
         /// Gets the data for a specific game.

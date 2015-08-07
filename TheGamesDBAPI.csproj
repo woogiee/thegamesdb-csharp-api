@@ -49,6 +49,7 @@
     <Compile Include="GamesDB.cs" />
     <Compile Include="GameSearchResult.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="GamesByPlatformResult.cs" />
     <Compile Include="PlatformSearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
