@@ -136,7 +136,11 @@ namespace TheGamesDBAPI {
                 // Iterate through all platform attributes
                 switch (attributeNode.Name) {
                     case "id":
-                        int.TryParse(attributeNode.InnerText, out game.ID);
+		                int gameId;
+		                if (int.TryParse(attributeNode.InnerText, out gameId))
+		                {
+			                game.ID = gameId;
+		                }
                         break;
                     case "Overview":
                         game.Overview = attributeNode.InnerText;
@@ -153,6 +157,12 @@ namespace TheGamesDBAPI {
                     case "overview":
                         game.Overview = attributeNode.InnerText;
                         break;
+					case "Youtube":
+						game.Youtube = attributeNode.InnerText;
+						break;
+					case "Co-op":
+						game.CoOp = attributeNode.InnerText;
+						break;
                     case "ESRB":
                         game.ESRB = attributeNode.InnerText;
                         break;
@@ -184,6 +194,16 @@ namespace TheGamesDBAPI {
                     case "Images":
                         game.Images.FromXmlNode(attributeNode);
                         break;
+					case "Similar":
+		                IEnumerator ienumSimilarTitles = attributeNode.ChildNodes.GetEnumerator();
+						while (ienumSimilarTitles.MoveNext())
+						{
+							if (((XmlNode)ienumSimilarTitles.Current).Name != "SimilarCount")
+							{
+								game.SimilarTitles.Add(new Game.SimilarTitle((XmlNode)ienumSimilarTitles.Current));
+							}
+						}
+		                break;
                 }
             }
 
@@ -267,7 +287,11 @@ namespace TheGamesDBAPI {
                 // Iterate through all platform attributes
                 switch (attributeNode.Name) {
                     case "id":
-                        int.TryParse(attributeNode.InnerText, out platform.ID);
+		                int platformId;
+		                if (int.TryParse(attributeNode.InnerText, out platformId))
+		                {
+			                platform.ID = platformId;
+		                }
                         break;
                     case "Platform":
                         platform.Name = attributeNode.InnerText;
@@ -300,10 +324,18 @@ namespace TheGamesDBAPI {
                         platform.Media = attributeNode.InnerText;
                         break;
                     case "maxcontrollers":
-                        int.TryParse(attributeNode.InnerText, out platform.MaxControllers);
+		                int maxControllers;
+						if (int.TryParse(attributeNode.InnerText, out maxControllers))
+		                {
+			                platform.MaxControllers = maxControllers;
+		                }
                         break;
                     case "Rating":
-                        float.TryParse(attributeNode.InnerText, out platform.Rating);
+		                float rating;
+		                if (float.TryParse(attributeNode.InnerText, out rating))
+		                {
+			                platform.Rating = rating;
+		                }
                         break;
                     case "Images":
                         platform.Images.FromXmlNode(attributeNode);

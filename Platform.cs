@@ -13,72 +13,72 @@ namespace TheGamesDBAPI {
         /// <summary>
         /// Unique database ID.
         /// </summary>
-        public int ID;
+		public int ID { get; set; }
 
         /// <summary>
         /// The name of the platform.
         /// </summary>
-        public String Name;
+		public string Name { get; set; }
 
         /// <summary>
         /// The max amount of controllers that can be connected to the device.
         /// </summary>
-        public int MaxControllers;
+		public int MaxControllers { get; set; }
 
         /// <summary>
         /// General overview of the platform.
         /// </summary>
-        public String Overview;
+		public string Overview { get; set; }
         
         /// <summary>
         /// The developer(s) of the platform.
         /// </summary>
-        public String Developer;
+		public string Developer { get; set; }
 
         /// <summary>
         /// The manufacturer(s) of the platform.
         /// </summary>
-        public String Manufacturer;
+		public string Manufacturer { get; set; }
 
         /// <summary>
         /// The CPU of the platform (for platforms which have one specific CPU).
         /// </summary>
-        public String CPU;
+		public string CPU { get; set; }
 
         /// <summary>
         /// Information about the platform's memory.
         /// </summary>
-        public String Memory;
+		public string Memory { get; set; }
 
         /// <summary>
         /// The platform's graphics card.
         /// </summary>
-        public String Graphics;
+		public string Graphics { get; set; }
 
         /// <summary>
         /// Information about the platform's sound capabilities.
         /// </summary>
-        public String Sound;
+		public string Sound { get; set; }
 
         /// <summary>
         /// Display resolution (on the form: 'width'x'height')
         /// </summary>
-        public String Display;
+		public string Display { get; set; }
 
         /// <summary>
         /// The game media the platform reads (eg. 'Disc').
         /// </summary>
-        public String Media;
+		public string Media { get; set; }
 
         /// <summary>
         /// The average rating as rated by the users on TheGamesDB.net.
         /// </summary>
-        public float Rating;
+		public float Rating { get; set; }
 
         /// <summary>
         /// A PlatformImages-object containing all the images for the platform.
         /// </summary>
-        public PlatformImages Images;
+		public PlatformImages Images { get; set; }
 
         /// <summary>
         /// Creates a new Platform without any content.
@@ -94,27 +94,27 @@ namespace TheGamesDBAPI {
             /// <summary>
             /// Path to the image of the console.
             /// </summary>
-            public String ConsoleArt;
+			public string ConsoleArt { get; set; }
 
             /// <summary>
             /// Path to the image of the controller.
             /// </summary>
-            public String ControllerArt;
+			public string ControllerArt { get; set; }
 
             /// <summary>
             /// Boxart for the platform
             /// </summary>
-            public PlatformImage Boxart;
+			public PlatformImage Boxart { get; set; }
 
             /// <summary>
             /// A list of all the fanart for the platform that have been uploaded to the database.
             /// </summary>
-            public List<PlatformImage> Fanart;
+			public List<PlatformImage> Fanart { get; set; }
 
             /// <summary>
             /// A list of all the banners for the platform that have been uploaded to the database.
             /// </summary>
-            public List<PlatformImage> Banners;
+			public List<PlatformImage> Banners { get; set; }
 
             /// <summary>
             /// Creates a new PlatformImages without any content.
@@ -157,21 +157,45 @@ namespace TheGamesDBAPI {
             /// Represents one image
             /// </summary>
             public class PlatformImage {
-                /// <summary>
-                /// The width of the image in pixels.
-                /// </summary>
-                public int Width;
+	            private int width;
 
-                /// <summary>
-                /// The height of the image in pixels.
-                /// </summary>
-                public int Height;
+	            private int height;
 
-                /// <summary>
-                /// The relative path to the image.
-                /// </summary>
-                /// <seealso cref="GamesDB.BaseImgURL"/>
-                public String Path;
+	            /// <summary>
+	            /// The width of the image in pixels.
+	            /// </summary>
+	            public int Width
+	            {
+		            get
+		            {
+			            return this.width;
+		            }
+		            set
+		            {
+			            this.width = value;
+		            }
+	            }
+
+	            /// <summary>
+	            /// The height of the image in pixels.
+	            /// </summary>
+	            public int Height
+	            {
+		            get
+		            {
+			            return this.height;
+		            }
+		            set
+		            {
+			            this.height = value;
+		            }
+	            }
+
+	            /// <summary>
+	            /// The relative path to the image.
+	            /// </summary>
+	            /// <seealso cref="GamesDB.BaseImgURL"/>
+	            public string Path { get; set; }
 
                 /// <summary>
                 /// Creates an image from an XmlNode.
@@ -180,9 +204,14 @@ namespace TheGamesDBAPI {
                 public PlatformImage(XmlNode node) {
                     Path = node.InnerText;
 
-                    int.TryParse(node.Attributes.GetNamedItem("width").InnerText, out Width);
-                    int.TryParse(node.Attributes.GetNamedItem("height").InnerText, out Height);
+                    int.TryParse(node.Attributes.GetNamedItem("width").InnerText, out width);
+                    int.TryParse(node.Attributes.GetNamedItem("height").InnerText, out height);
                 }
+
+	            public PlatformImage(string path)
+	            {
+		            Path = path;
+	            }
             }
         }
     }
